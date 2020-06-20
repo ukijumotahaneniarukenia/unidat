@@ -38,8 +38,8 @@ public class App {
     private static final String PROGRAM_NAME = "unidat";
     private static final String PROGRAM_VERSION = "1-0-0";
 
-    private static Integer SUCCESS_STATUS=0;
-    private static Integer FAILURE_STATUS=1;
+    private static final Integer SUCCESS_STATUS=0;
+    private static final Integer FAILURE_STATUS=1;
 
     private static Integer SEQ_CNT=0;
     private static Integer GRP_CNT=0;
@@ -47,12 +47,12 @@ public class App {
     private static final String OFF = "0";
     private static final String ARGS_SEPARATOR = ":";
 
-    private static final String OPTION_IDX_INPUT_PTN="IDX_INPUT_PTN";
+    private static final String OPTION_IDX_INPUT_PATTERN="IDX_INPUT_PATTERN";
     private static final String OPTION_SEARCH_KEYWORD="SEARCH_KEYWORD";
 
-    private static Integer DEFAULT_START_RN=Character.MIN_CODE_POINT;
+    private static Integer DEFAULT_START_RN =Character.MIN_CODE_POINT;
     private static Integer DEFAULT_END_RN=Character.MAX_CODE_POINT;
-    private static String DEFAULT_NONE_KEYWORD="ウンコもりもり森鴎外";
+    private static final String DEFAULT_NONE_KEYWORD="ウンコもりもり森鴎外";
 
     private static final String OPTION_RANGE = "OPTION_RANGE";
     private static final String OPTION_HELP = "OPTION_HELP";
@@ -101,7 +101,7 @@ public class App {
     private static final String CMDLINE_ARGS_NEED = "CMDLINE_ARGS_NEED";
     private static final String CMDLINE_ARGS_NEED_CNT = "CMDLINE_ARGS_NEED_CNT";
 
-    private static final String OPTION_SEARCH_KEYWORD_PTN="[A-Z]+";
+    private static final String OPTION_SEARCH_KEYWORD_PATTERN="[A-Z]+";
 
     //helpで使用予定
     private static final List<String> OPTION_IDX_INPUT_LIST = Arrays.asList(OPTION_IDX_INPUT_UNICODE_NAME,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME);
@@ -267,7 +267,7 @@ public class App {
             put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,Arrays.asList(ON));
             put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME,Arrays.asList(ON));
             put(OPTION_HASH_KEY_SEARCH,Arrays.asList(ON));
-            put(OPTION_SEARCH_KEYWORD, Arrays.asList(OPTION_SEARCH_KEYWORD_PTN));
+            put(OPTION_SEARCH_KEYWORD, Arrays.asList(OPTION_SEARCH_KEYWORD_PATTERN));
         }});
         //OFFするマップ
         put(OFF, new LinkedHashMap<>(){{
@@ -558,7 +558,7 @@ public class App {
                 case OPTION_HASH_KEY_SEARCH:
                     usageHashKeySearch();
                     break;
-                case OPTION_IDX_INPUT_PTN:
+                case OPTION_IDX_INPUT_PATTERN:
                     optionHelp();
                     break;
                 default:
