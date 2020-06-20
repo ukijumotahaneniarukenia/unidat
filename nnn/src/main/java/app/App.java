@@ -39,89 +39,10 @@ import java.util.stream.Stream;
 //19. range-onlyの際のmin-cp:max-cpのレスが遅過ぎ
 //20. word別に集計結果を一覧表示 --summary min,max,average,count,listagg...
 
-
-//echo -{word,ngram}-{nonsplit,split,hyphen-split,underscore-split,all-split} | xargs -n1
-
-//echo -input-unicode-{name,script-name,block-name} | xargs -n1
-
-//echo "HAN","HIRAGANA","GANA","UNKO","GRAM","POPO","POI","WAN","LUIS","BUTTA","AKASATANA","UBUNTU","QUALITY","RUBY","ZANBIA" | tr  ',' ' ' | xargs -n1
-
-//full-pattern
-//parallel echo ::: -input-unicode-{name,script-name,block-name} ::: -hash -{word,ngram}-{nonsplit,split,hyphen-split,underscore-split,all-split} ::: $(echo "HAN","HIRAGANA","GANA","UNKO","GRAM","POPO","POI","WAN","LUIS","BUTTA","AKASATANA","UBUNTU","QUALITY","RUBY","ZANBIA" | tr  ',' ' ')
-
-//soso-pattern
-//parallel echo ::: -input-unicode-{name,script-name,block-name} ::: -hash -{word,ngram}-{nonsplit,split,hyphen-split,underscore-split,all-split} ::: $(echo "HAN","HIRAGANA" | tr  ',' ' ')
-
-//-input-unicode-name -hash HAN
-//-input-unicode-name -hash HIRAGANA
-//-input-unicode-name -word-nonsplit HAN
-//-input-unicode-name -word-nonsplit HIRAGANA
-//-input-unicode-name -word-split HAN
-//-input-unicode-name -word-split HIRAGANA
-//-input-unicode-name -word-hyphen-split HAN
-//-input-unicode-name -word-hyphen-split HIRAGANA
-//-input-unicode-name -word-underscore-split HAN
-//-input-unicode-name -word-underscore-split HIRAGANA
-//-input-unicode-name -word-all-split HAN
-//-input-unicode-name -word-all-split HIRAGANA
-//-input-unicode-name -ngram-nonsplit HAN
-//-input-unicode-name -ngram-nonsplit HIRAGANA
-//-input-unicode-name -ngram-split HAN
-//-input-unicode-name -ngram-split HIRAGANA
-//-input-unicode-name -ngram-hyphen-split HAN
-//-input-unicode-name -ngram-hyphen-split HIRAGANA
-//-input-unicode-name -ngram-underscore-split HAN
-//-input-unicode-name -ngram-underscore-split HIRAGANA
-//-input-unicode-name -ngram-all-split HAN
-//-input-unicode-name -ngram-all-split HIRAGANA
-//-input-unicode-script-name -hash HAN
-//-input-unicode-script-name -hash HIRAGANA
-//-input-unicode-script-name -word-nonsplit HAN
-//-input-unicode-script-name -word-nonsplit HIRAGANA
-//-input-unicode-script-name -word-split HAN
-//-input-unicode-script-name -word-split HIRAGANA
-//-input-unicode-script-name -word-hyphen-split HAN
-//-input-unicode-script-name -word-hyphen-split HIRAGANA
-//-input-unicode-script-name -word-underscore-split HAN
-//-input-unicode-script-name -word-underscore-split HIRAGANA
-//-input-unicode-script-name -word-all-split HAN
-//-input-unicode-script-name -word-all-split HIRAGANA
-//-input-unicode-script-name -ngram-nonsplit HAN
-//-input-unicode-script-name -ngram-nonsplit HIRAGANA
-//-input-unicode-script-name -ngram-split HAN
-//-input-unicode-script-name -ngram-split HIRAGANA
-//-input-unicode-script-name -ngram-hyphen-split HAN
-//-input-unicode-script-name -ngram-hyphen-split HIRAGANA
-//-input-unicode-script-name -ngram-underscore-split HAN
-//-input-unicode-script-name -ngram-underscore-split HIRAGANA
-//-input-unicode-script-name -ngram-all-split HAN
-//-input-unicode-script-name -ngram-all-split HIRAGANA
-//-input-unicode-block-name -hash HAN
-//-input-unicode-block-name -hash HIRAGANA
-//-input-unicode-block-name -word-nonsplit HAN
-//-input-unicode-block-name -word-nonsplit HIRAGANA
-//-input-unicode-block-name -word-split HAN
-//-input-unicode-block-name -word-split HIRAGANA
-//-input-unicode-block-name -word-hyphen-split HAN
-//-input-unicode-block-name -word-hyphen-split HIRAGANA
-//-input-unicode-block-name -word-underscore-split HAN
-//-input-unicode-block-name -word-underscore-split HIRAGANA
-//-input-unicode-block-name -word-all-split HAN
-//-input-unicode-block-name -word-all-split HIRAGANA
-//-input-unicode-block-name -ngram-nonsplit HAN
-//-input-unicode-block-name -ngram-nonsplit HIRAGANA
-//-input-unicode-block-name -ngram-split HAN
-//-input-unicode-block-name -ngram-split HIRAGANA
-//-input-unicode-block-name -ngram-hyphen-split HAN
-//-input-unicode-block-name -ngram-hyphen-split HIRAGANA
-//-input-unicode-block-name -ngram-underscore-split HAN
-//-input-unicode-block-name -ngram-underscore-split HIRAGANA
-//-input-unicode-block-name -ngram-all-split HAN
-//-input-unicode-block-name -ngram-all-split HIRAGANA
-
 public class App {
 
     private static final String PROGRAM_NAME = "unidat";
+    private static final String PROGRAM_VERSION = "1-0-0";
 
     private static Integer SUCCESS_STATUS=0;
     private static Integer FAILURE_STATUS=1;
@@ -130,7 +51,6 @@ public class App {
     private static Integer GRP_CNT=0;
     private static final String ON = "1";
     private static final String OFF = "0";
-    private static final String ARTIFACT_ID = "1-0-0";
     private static final String ARGS_SEPARATOR = ":";
 
     private static final String OPTION_IDX_INPUT_PTN="IDX_INPUT_PTN";
@@ -184,47 +104,93 @@ public class App {
     private static final String OPTION_MK_IDX_SHAPE="MK_IDX_SHAPE";
     private static final String OPTION_MK_IDX_FILTER="MK_IDX_FILTER";
 
+    private static final String CMDLINE_ARGS_NEED = "CMDLINE_ARGS_NEED";
+    private static final String CMDLINE_ARGS_NEED_CNT = "CMDLINE_ARGS_NEED_CNT";
+
     private static final String OPTION_SEARCH_KEYWORD_PTN="[A-Z]+";
 
     //helpで使用予定
     private static final List<String> OPTION_IDX_INPUT_LIST = Arrays.asList(OPTION_IDX_INPUT_UNICODE_NAME,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME);
     private static final List<String> OPTION_SAMPLE_KEYWORD_LIST = Arrays.asList("HAN","HIRAGANA","GANA","UNKO","GRAM","POPO","POI","WAN","LUIS","BUTTA","AKASATANA","UBUNTU","QUALITY","RUBY","ZANBIA");
 
-    private static final Map<String, List<String>> argsOptPtn = new LinkedHashMap<>(){{
-        put(OPTION_NUM_TO_STR, Arrays.asList("true", "-cp", "--cp", "--codepoint"));
-        put(OPTION_CP_TO_STR, Arrays.asList("true", "-s", "-str", "--str"));
-        put(OPTION_CP_TO_UNICODE_NAME, Arrays.asList("true", "-unm", "--unm"));
-        put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, Arrays.asList("true", "-usc", "--usc"));
-        put(OPTION_CP_TO_UNICODE_BLOCK_NAME, Arrays.asList("true", "-ubl", "--ubl"));
-        put(OPTION_STR_TO_UTF8, Arrays.asList("true", "-u8", "--u8"));
-        put(OPTION_STR_TO_UTF16, Arrays.asList("true", "-u16", "--u16"));
-        put(OPTION_STR_TO_UTF32, Arrays.asList("true", "-u32","--u32"));
-        put(OPTION_STR_TO_UNICODE, Arrays.asList("true", "-unicode", "--unicode"));
-        put(OPTION_NORM_GRP_NFC, Arrays.asList("true", "-nfc", "--nfc"));
-        put(OPTION_NORM_GRP_NFD, Arrays.asList("true", "-nfd","--nfd"));
-        put(OPTION_NORM_GRP_NFKC, Arrays.asList("true", "-nfkc", "--nfkc"));
-        put(OPTION_NORM_GRP_NFKD, Arrays.asList("true", "-nfkd", "--nfkd"));
+    private static final Map<String, Map<String,String>> CMDLINE_ARGS_NEED_PATTERN = new LinkedHashMap<>(){{
+        put(OPTION_NUM_TO_STR, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
 
-        put(OPTION_IDX_INPUT_UNICODE_NAME, Arrays.asList("true", "-input-unicode-name", "--input-unicode-name"));
-        put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, Arrays.asList("true", "-input-unicode-script-name", "--input-unicode-script-name"));
-        put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, Arrays.asList("true", "-input-unicode-block-name","--input-unicode-block-name"));
+        put(OPTION_CP_TO_STR, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_CP_TO_UNICODE_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_CP_TO_UNICODE_BLOCK_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_STR_TO_UTF8, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_STR_TO_UTF16, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_STR_TO_UTF32, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_STR_TO_UNICODE, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_NORM_GRP_NFC, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_NORM_GRP_NFD, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_NORM_GRP_NFKC, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_NORM_GRP_NFKD, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
 
-        put(OPTION_MK_WORD_IDX_NON_SPLIT, Arrays.asList("true", "-word-nonsplit", "--word-nonsplit"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT, Arrays.asList("true", "-word-split", "--word-split"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT, Arrays.asList("true", "-word-hyphen-split","--word-hyphen-split"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT, Arrays.asList("true", "-word-underscore-split", "--word-underscore-split"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("true", "-word-all-split", "--word-all-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_SPLIT, Arrays.asList("true", "-ngram-nonsplit", "--ngram-nonsplit"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT, Arrays.asList("true", "-ngram-split", "--ngram-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT, Arrays.asList("true", "-ngram-hyphen-split","--ngram-hyphen-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT, Arrays.asList("true", "-ngram-underscore-split", "--ngram-underscore-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("true", "-ngram-all-split", "--ngram-all-split"));
-        put(OPTION_HASH_KEY_SEARCH, Arrays.asList("true", "-hash", "--hash", "-hashkey", "-hashKey", "-HashKey", "-Hashkey", "--hashkey", "--hashKey", "--HashKey", "--Hashkey"));
+        put(OPTION_IDX_INPUT_UNICODE_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
 
-        put(OPTION_RANGE, Arrays.asList("false","2","-r.*", "--r.*", "--range.*", "-range.*"));
-        put(OPTION_HELP, Arrays.asList("true", "-h", "--h", "--help", "-help"));
-        put(OPTION_VERSION, Arrays.asList("true", "-v", "--v", "-V", "--V", "-version", "--version"));
-        put(OPTION_USAGE, Arrays.asList("true", "-usage", "--usage", "-Usage", "--Usage"));
+        put(OPTION_MK_WORD_IDX_NON_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_NON_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_HASH_KEY_SEARCH, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+
+        put(OPTION_RANGE, new LinkedHashMap(){{
+            put(CMDLINE_ARGS_NEED,"true");
+            put(CMDLINE_ARGS_NEED_CNT,"2");
+        }});
+
+        put(OPTION_HELP, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_VERSION, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_USAGE, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+
+    }};
+
+    private static final Map<String, List<String>> OPTION_ARGS_PATTERN = new LinkedHashMap<>(){{
+        put(OPTION_NUM_TO_STR, Arrays.asList("-cp", "--cp", "--codepoint"));
+        put(OPTION_CP_TO_STR, Arrays.asList("-s", "-str", "--str"));
+        put(OPTION_CP_TO_UNICODE_NAME, Arrays.asList("-unm", "--unm"));
+        put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, Arrays.asList("-usc", "--usc"));
+        put(OPTION_CP_TO_UNICODE_BLOCK_NAME, Arrays.asList("-ubl", "--ubl"));
+        put(OPTION_STR_TO_UTF8, Arrays.asList("-u8", "--u8"));
+        put(OPTION_STR_TO_UTF16, Arrays.asList("-u16", "--u16"));
+        put(OPTION_STR_TO_UTF32, Arrays.asList("-u32","--u32"));
+        put(OPTION_STR_TO_UNICODE, Arrays.asList("-unicode", "--unicode"));
+        put(OPTION_NORM_GRP_NFC, Arrays.asList("-nfc", "--nfc"));
+        put(OPTION_NORM_GRP_NFD, Arrays.asList("-nfd","--nfd"));
+        put(OPTION_NORM_GRP_NFKC, Arrays.asList("-nfkc", "--nfkc"));
+        put(OPTION_NORM_GRP_NFKD, Arrays.asList("-nfkd", "--nfkd"));
+
+        put(OPTION_IDX_INPUT_UNICODE_NAME, Arrays.asList("-input-unicode-name", "--input-unicode-name"));
+        put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, Arrays.asList("-input-unicode-script-name", "--input-unicode-script-name"));
+        put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, Arrays.asList("-input-unicode-block-name","--input-unicode-block-name"));
+
+        put(OPTION_MK_WORD_IDX_NON_SPLIT, Arrays.asList("-word-nonsplit", "--word-nonsplit"));
+        put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT, Arrays.asList("-word-split", "--word-split"));
+        put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT, Arrays.asList("-word-hyphen-split","--word-hyphen-split"));
+        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT, Arrays.asList("-word-underscore-split", "--word-underscore-split"));
+        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-word-all-split", "--word-all-split"));
+        put(OPTION_MK_NGRAM_IDX_NON_SPLIT, Arrays.asList("-ngram-nonsplit", "--ngram-nonsplit"));
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT, Arrays.asList("-ngram-split", "--ngram-split"));
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT, Arrays.asList("-ngram-hyphen-split","--ngram-hyphen-split"));
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT, Arrays.asList("-ngram-underscore-split", "--ngram-underscore-split"));
+        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-ngram-all-split", "--ngram-all-split"));
+        put(OPTION_HASH_KEY_SEARCH, Arrays.asList("-hash", "--hash", "-hashkey", "-hashKey", "-HashKey", "-Hashkey", "--hashkey", "--hashKey", "--HashKey", "--Hashkey"));
+
+        put(OPTION_RANGE, Arrays.asList("-r.*", "--r.*", "--range.*", "-range.*"));
+        put(OPTION_HELP, Arrays.asList("-h", "--h", "--help", "-help"));
+        put(OPTION_VERSION, Arrays.asList("-v", "--v", "-V", "--V", "-version", "--version"));
+        put(OPTION_USAGE, Arrays.asList("-usage", "--usage", "-Usage", "--Usage"));
 
     }};
     //正規化パタンを定義
@@ -326,7 +292,7 @@ public class App {
         }});
     }};
     //引数に指定されなかったら設定するマップ
-    private static final Map<String, Map<String,List<String>>> defaultOptionFlgPtn = new HashMap<>(){{
+    private static final Map<String, Map<String,List<String>>> optionDefaultFlgPtn = new HashMap<>(){{
         //ONするマップ
         put(ON, new LinkedHashMap<>(){{
             put(OPTION_NUM_TO_STR,Arrays.asList(ON));
@@ -632,7 +598,7 @@ public class App {
         System.out.println(PROGRAM_NAME + " -input-unicode-name -word-split SILHOUETTE -u32 --nfd -nfc -nfkc -u16 -u32  -input-unicode-name -word-split MOYAI -u32 --nfd -nfc -nfkc -u16 -u32 -unicode");
     }
     private static void optionVersion(){
-        System.out.println(ARTIFACT_ID);
+        System.out.println(PROGRAM_VERSION);
     }
     private static void usageWordSearch(){
         final String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
@@ -871,67 +837,26 @@ public class App {
         return rt;
     }
 
-    private static Map<String, String> prepareRegexpForParseOption(Map<String, List<String>> argsOptPtn){
-        Map<String, String> rt = new LinkedHashMap<>();
-        for(Map.Entry<String,List<String>> entry : argsOptPtn.entrySet()){
-            if(Boolean.parseBoolean(entry.getValue().get(0))){
-                //コマンドライン引数値を伴わない場合
-                Pattern ptn = Pattern.compile("((?!.)." + entry.getValue().subList(1,entry.getValue().size()).stream().map(Pattern::quote).map("|"::concat).collect(Collectors.joining()) + ")");
-                rt.put(entry.getKey(),ptn.toString());
-            }else{
-                //コマンドライン引数値を伴う場合
-                Pattern ptn = Pattern.compile("((?!.)." + entry.getValue().subList(2,entry.getValue().size()).stream().map("|"::concat).collect(Collectors.joining()) + ")");
-                rt.put(entry.getKey(),ptn.toString());
-            }
+    private static Map<String, Pattern> mkOptionArgsRegexpPattern(Map<String, List<String>> optionArgsPattern){
+        Map<String, Pattern> rt = new LinkedHashMap<>();
+        for(Map.Entry<String,List<String>> entry : optionArgsPattern.entrySet()){
+            Pattern ptn = Pattern.compile("((?!.)." + entry.getValue().stream().map("|"::concat).collect(Collectors.joining()) + ")");
+            rt.put(entry.getKey(),ptn);
         }
         return rt;
-    }
-
-    private static void setRange(String s,Map<String, String> prepareRegexpForParseOption){
-        List<String> l = Arrays.asList(s.split(ARGS_SEPARATOR));
-        if(s.matches(prepareRegexpForParseOption.get(OPTION_RANGE))){
-            if(l.size()>3){
-                optionUsage(FAILURE_STATUS,OPTION_HELP);
-            }
-            if(2==l.size()){
-                if(l.get(1).length()>String.valueOf(DEFAULT_END_RN).length()){
-                    optionUsage(FAILURE_STATUS,OPTION_HELP);
-                }
-                if(Integer.parseInt(l.get(1))>DEFAULT_END_RN){
-                    optionUsage(FAILURE_STATUS,OPTION_HELP);
-                }
-                if(Integer.parseInt(l.get(1))<DEFAULT_END_RN){
-                    DEFAULT_END_RN=Integer.parseInt(l.get(1));
-                }
-            }else if(3==l.size()){
-                if(l.get(1).length()>String.valueOf(DEFAULT_END_RN).length()||l.get(2).length()>String.valueOf(DEFAULT_END_RN).length()){
-                    optionUsage(FAILURE_STATUS,OPTION_HELP);
-                }
-                if(Integer.parseInt(l.get(2))<DEFAULT_START_RN){
-                    optionUsage(FAILURE_STATUS,OPTION_HELP);
-                }
-                DEFAULT_START_RN=Integer.parseInt(l.get(1));
-                DEFAULT_END_RN=Integer.parseInt(l.get(2));
-            }else{
-                optionUsage(FAILURE_STATUS,OPTION_HELP);
-            }
-        }
     }
 
     private static boolean isSearchKeyword (String s,List<String> ptnList) {
         return ptnList.stream().anyMatch(ptn -> s.matches(ptn));
     }
 
-    private static List<Map<String, List<String>>> execParseOption (List<String> cmdLineArgs,Map<String, String> prepareRegexpForParseOption){
+    private static List<Map<String, List<String>>> setOptionArgsPattern (List<String> cmdLineArgs,Map<String, Pattern> optionArgsRegexpPatternMap){
         List<Map<String, List<String>>> rt = new ArrayList<>();
         if(cmdLineArgs.size()<=0){
             optionUsage(FAILURE_STATUS,OPTION_HELP);
         }
 
         int mx = cmdLineArgs.size();
-
-        //システム全体で参照するコードポイント範囲を設定
-        IntStream.range(0,mx).boxed().forEach(i->setRange(cmdLineArgs.get(i),prepareRegexpForParseOption));
 
         Map<String, List<String>> optionFlgPtnOnMap = new LinkedHashMap<>();
         Map<String, List<String>> optionFlgPtnOffMap = new LinkedHashMap<>();
@@ -947,14 +872,14 @@ public class App {
                     }
                 }else{
                     //コマンドライン引数が検索キーワードでない場合
-                    if(cmdLineArgs.get(i).matches(prepareRegexpForParseOption.get(entry.getKey()))){
+                    if(optionArgsRegexpPatternMap.get(entry.getKey()).matcher(cmdLineArgs.get(i)).matches()){
                         optionFlgPtnOnMap.put(entry.getKey(),entry.getValue());
                     }
                 }
             }
             //オプション引数が与えた際のフラグ設定 OFF 与えられた分だけ設定
             for(Map.Entry<String,List<String>> entry : optionFlgPtn.get(OFF).entrySet()){
-                if(cmdLineArgs.get(i).matches(prepareRegexpForParseOption.get(entry.getKey()))){
+                if(optionArgsRegexpPatternMap.get(entry.getKey()).matcher(cmdLineArgs.get(i)).matches()){
                     optionFlgPtnOffMap.put(entry.getKey(),entry.getValue());
                 }
             }
@@ -966,7 +891,7 @@ public class App {
 
         //オプション引数が与えられなかった際のデフォルトフラグ設定 ON
         Map<String, List<String>> defaultOptionFlgPtnOnMap = new LinkedHashMap<>();
-        for(Map.Entry<String,List<String>> entry : defaultOptionFlgPtn.get(ON).entrySet()){
+        for(Map.Entry<String,List<String>> entry : optionDefaultFlgPtn.get(ON).entrySet()){
             if(rt.stream().flatMap(map->map.keySet().stream()).noneMatch(key->key.contains(entry.getKey()))){
                 //未登録エントリのみ設定
                 defaultOptionFlgPtnOnMap.put(entry.getKey(),entry.getValue());
@@ -977,7 +902,7 @@ public class App {
 
         //オプション引数が与えられなかった際のデフォルトフラグ設定 OFF
         Map<String, List<String>> defaultOptionFlgPtnOffMap = new LinkedHashMap<>();
-        for(Map.Entry<String,List<String>> entry : defaultOptionFlgPtn.get(OFF).entrySet()){
+        for(Map.Entry<String,List<String>> entry : optionDefaultFlgPtn.get(OFF).entrySet()){
             if(rt.stream().flatMap(map->map.keySet().stream()).noneMatch(key->key.contains(entry.getKey()))){
                 //未登録エントリのみ設定
                 defaultOptionFlgPtnOffMap.put(entry.getKey(),entry.getValue());
@@ -1106,12 +1031,57 @@ public class App {
         return rt;
     }
 
-    public static void main(String... args) {
+    private static void setDefaultCodePointRange(List<String> cmdLineArgs, Map<String,Pattern> optionArgsRegexpPatternMap){
+        //システム全体で参照するコードポイント範囲を設定
+        int mx = cmdLineArgs.size();
+        for(int i = 0;i < mx;i++){
+            List<String> l = Arrays.asList(cmdLineArgs.get(i).split(ARGS_SEPARATOR));
+            if(optionArgsRegexpPatternMap.get(OPTION_RANGE).matcher(cmdLineArgs.get(i)).matches()){
+                if(l.size()>3){
+                    //引数個数チェック
+                    optionUsage(FAILURE_STATUS,OPTION_HELP);
+                }
+                if(2==l.size()){
+                    if(l.get(1).length()>String.valueOf(DEFAULT_END_RN).length()){
+                        //桁数チェック
+                        optionUsage(FAILURE_STATUS,OPTION_HELP);
+                    }
+                    if(Integer.parseInt(l.get(1))>DEFAULT_END_RN){
+                        //最大値チェック
+                        optionUsage(FAILURE_STATUS,OPTION_HELP);
+                    }
+                    if(Integer.parseInt(l.get(1))<DEFAULT_END_RN){
+                        DEFAULT_END_RN = Integer.parseInt(l.get(1));
+                    }
+                }else if(3==l.size()){
+                    if(l.get(1).length()>String.valueOf(DEFAULT_END_RN).length()||l.get(2).length()>String.valueOf(DEFAULT_END_RN).length()){
+                        optionUsage(FAILURE_STATUS,OPTION_HELP);
+                    }
+                    if(Integer.parseInt(l.get(2))<DEFAULT_START_RN){
+                        optionUsage(FAILURE_STATUS,OPTION_HELP);
+                    }
+                    DEFAULT_START_RN = Integer.parseInt(l.get(1));
+                    DEFAULT_END_RN = Integer.parseInt(l.get(2));
+                }else{
+                    optionUsage(FAILURE_STATUS,OPTION_HELP);
+                }
+            }
+        }
+    }
+
+    public static void main(String... cmdLineArgs) {
         int ret;
 
-        List<Map<String, List<String>>> mainProcessArgs = execParseOption(Arrays.asList(args),prepareRegexpForParseOption(argsOptPtn));
+//        cmdLineArgs = new String[]{"--range:1:30"};
+
+        Map<String,Pattern> optionArgsRegexpPattern = mkOptionArgsRegexpPattern(OPTION_ARGS_PATTERN);
+
+        setDefaultCodePointRange(Arrays.asList(cmdLineArgs),optionArgsRegexpPattern);
+
+        List<Map<String, List<String>>> mainProcessArgs = setOptionArgsPattern(Arrays.asList(cmdLineArgs),mkOptionArgsRegexpPattern(OPTION_ARGS_PATTERN));
 
         canYouHelpMe(mainProcessArgs);
+
 
         Map<Integer,Map<String,List<String>>> mainGroupingProcessArgs = mainGroupingProcessArgs(mainProcessArgs);
 
@@ -1119,6 +1089,11 @@ public class App {
 
         int mx = mainGroupingProcessArgs.size();
         List<Map<String,List<String>>> mainReStyleProcessArgs = IntStream.rangeClosed(1,mx).boxed().map(k->mainGroupingProcessArgs.get(k)).collect(Collectors.toList());
+
+//        System.out.println(DEFAULT_START_RN);
+//        System.out.println(DEFAULT_END_RN);
+
+//        System.exit(1);
 
         ret = mainProcess(mainReStyleProcessArgs);
         System.exit(ret);
