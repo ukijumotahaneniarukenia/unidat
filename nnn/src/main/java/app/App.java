@@ -85,15 +85,15 @@ public class App {
     private static final String OPTION_STR_TO_NORM="STR_TO_NORM";
 
     private static final String OPTION_MK_WORD_IDX_NON_SPLIT="MK_WORD_IDX_NON_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_NON_WORD_SPLIT="MK_WORD_IDX_NON_WORD_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT="MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT="MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_SPLIT="MK_WORD_IDX_WORD_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT="MK_WORD_IDX_WORD_HYPHEN_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT="MK_WORD_IDX_WORD_UNDERSCORE_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT";
     private static final String OPTION_MK_NGRAM_IDX_NON_SPLIT="MK_NGRAM_IDX_NON_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT="MK_NGRAM_IDX_NON_WORD_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT="MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT="MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_SPLIT="MK_NGRAM_IDX_WORD_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT="MK_NGRAM_IDX_WORD_HYPHEN_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT="MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT";
 
     private static final String OPTION_MK_IDX_SHAPE="MK_IDX_SHAPE";
     private static final String OPTION_MK_IDX_FILTER="MK_IDX_FILTER";
@@ -103,7 +103,7 @@ public class App {
 
     private static final String OPTION_SEARCH_KEYWORD_PATTERN="[A-Z]+";
 
-    //helpで使用予定
+    //TODO helpで使用予定
     private static final List<String> OPTION_IDX_INPUT_LIST = Arrays.asList(OPTION_IDX_INPUT_UNICODE_NAME,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME);
     private static final List<String> OPTION_SAMPLE_KEYWORD_LIST = Arrays.asList("HAN","HIRAGANA","GANA","UNKO","GRAM","POPO","POI","WAN","LUIS","BUTTA","AKASATANA","UBUNTU","QUALITY","RUBY","ZANBIA");
 
@@ -129,15 +129,15 @@ public class App {
         put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
 
         put(OPTION_MK_WORD_IDX_NON_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
         put(OPTION_MK_NGRAM_IDX_NON_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
         put(OPTION_HASH_KEY_SEARCH, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
 
         put(OPTION_RANGE, new LinkedHashMap(){{
@@ -171,15 +171,15 @@ public class App {
         put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, Arrays.asList("-input-unicode-block-name","--input-unicode-block-name"));
 
         put(OPTION_MK_WORD_IDX_NON_SPLIT, Arrays.asList("-word-nonsplit", "--word-nonsplit"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT, Arrays.asList("-word-split", "--word-split"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT, Arrays.asList("-word-hyphen-split","--word-hyphen-split"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT, Arrays.asList("-word-underscore-split", "--word-underscore-split"));
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-word-all-split", "--word-all-split"));
+        put(OPTION_MK_WORD_IDX_WORD_SPLIT, Arrays.asList("-word-split", "--word-split"));
+        put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT, Arrays.asList("-word-hyphen-split","--word-hyphen-split"));
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT, Arrays.asList("-word-underscore-split", "--word-underscore-split"));
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-word-all-split", "--word-all-split"));
         put(OPTION_MK_NGRAM_IDX_NON_SPLIT, Arrays.asList("-ngram-nonsplit", "--ngram-nonsplit"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT, Arrays.asList("-ngram-split", "--ngram-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT, Arrays.asList("-ngram-hyphen-split","--ngram-hyphen-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT, Arrays.asList("-ngram-underscore-split", "--ngram-underscore-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-ngram-all-split", "--ngram-all-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_SPLIT, Arrays.asList("-ngram-split", "--ngram-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT, Arrays.asList("-ngram-hyphen-split","--ngram-hyphen-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT, Arrays.asList("-ngram-underscore-split", "--ngram-underscore-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-ngram-all-split", "--ngram-all-split"));
         put(OPTION_HASH_KEY_SEARCH, Arrays.asList("-hash", "--hash", "-hashkey", "-hashKey", "-HashKey", "-Hashkey", "--hashkey", "--hashKey", "--HashKey", "--Hashkey"));
 
         put(OPTION_RANGE, Arrays.asList("-r.*", "--r.*", "--range.*", "-range.*"));
@@ -198,15 +198,15 @@ public class App {
     //グループ化対象キーを定義
     private static final List<String> grpArgsList = new ArrayList<>(Arrays.asList(
             OPTION_MK_WORD_IDX_NON_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
             ,OPTION_MK_NGRAM_IDX_NON_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
             ,OPTION_HASH_KEY_SEARCH
             ,OPTION_IDX_INPUT_UNICODE_NAME
             ,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME
@@ -232,18 +232,18 @@ public class App {
     //単語分割メソッドリストを定義
     private static final List<String> wordSplitList = new ArrayList<>(Arrays.asList(
             OPTION_MK_WORD_IDX_NON_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
     ));
     //NGRAM分割メソッドリストを定義
     private static final List<String> ngramSplitList = new ArrayList<>(Arrays.asList(
             OPTION_MK_NGRAM_IDX_NON_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
     ));
     //引数に指定されたら設定するマップ
     private static final Map<String, Map<String,List<String>>> OPTION_FLG_PATTERN = new HashMap<>(){{
@@ -254,15 +254,15 @@ public class App {
             put(OPTION_USAGE,Arrays.asList(ON));
             put(OPTION_RANGE,Arrays.asList(ON));
             put(OPTION_MK_WORD_IDX_NON_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
             put(OPTION_MK_NGRAM_IDX_NON_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
             put(OPTION_IDX_INPUT_UNICODE_NAME,Arrays.asList(ON));
             put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,Arrays.asList(ON));
             put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME,Arrays.asList(ON));
@@ -389,7 +389,7 @@ public class App {
     static Function<String, String> strToUnicode = (s)-> {
         return IntStream.range(0,s.length()).boxed().map(e->String.format("U+%05X",(int)s.charAt(e))).collect(Collectors.joining("-"));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxNonWordSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxWordSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().collect(Collectors.toList());
@@ -400,7 +400,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxNonWordHyphenSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxWordHyphenSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().flatMap(e->Arrays.asList(e.split("-")).stream()).collect(Collectors.toList());
@@ -411,7 +411,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxNonWordUnderScoreSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxWordUnderScoreSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().flatMap(e->Arrays.asList(e.split("_")).stream()).collect(Collectors.toList());
@@ -422,7 +422,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxNonWordUnderScoreHyphenSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkWordIdxWordUnderScoreHyphenSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().flatMap(e->Arrays.asList(e.split("_")).stream()).flatMap(e->Arrays.asList(e.split("-")).stream()).collect(Collectors.toList());
@@ -433,7 +433,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxNonWordSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxWordSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W"));
@@ -448,7 +448,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxNonWordHyphenSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxWordHyphenSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().flatMap(e->Arrays.asList(e.split("-")).stream()).collect(Collectors.toList());
@@ -463,7 +463,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxNonWordUnderScoreSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxWordUnderScoreSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().flatMap(e->Arrays.asList(e.split("_")).stream()).collect(Collectors.toList());
@@ -478,7 +478,7 @@ public class App {
         }
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
-    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxNonWordUnderScoreHyphenSplit = (m,n) -> {
+    static BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>> mkNgramIdxWordUnderScoreHyphenSplit = (m,n) -> {
         Map<String, String> tmp = new HashMap<>();
         for(Map.Entry<Integer, String> entry : m.entrySet()){
             List<String> l = Arrays.asList(entry.getValue().split("\\W")).stream().flatMap(e->Arrays.asList(e.split("_")).stream()).flatMap(e->Arrays.asList(e.split("-")).stream()).collect(Collectors.toList());
@@ -506,14 +506,14 @@ public class App {
         put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, mkInputUnicodeBlockName);
     }};
     private static final Map<String,BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>>> SPLIT_PROCESS_FUNCTION_MAP = new LinkedHashMap<>(){{
-        put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT,mkWordIdxNonWordSplit);
-        put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT,mkWordIdxNonWordHyphenSplit);
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT,mkWordIdxNonWordUnderScoreSplit);
-        put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT,mkWordIdxNonWordUnderScoreHyphenSplit);
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT,mkNgramIdxNonWordSplit);
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT,mkNgramIdxNonWordHyphenSplit);
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT,mkNgramIdxNonWordUnderScoreSplit);
-        put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT,mkNgramIdxNonWordUnderScoreHyphenSplit);
+        put(OPTION_MK_WORD_IDX_WORD_SPLIT,mkWordIdxWordSplit);
+        put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT,mkWordIdxWordHyphenSplit);
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT,mkWordIdxWordUnderScoreSplit);
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,mkWordIdxWordUnderScoreHyphenSplit);
+        put(OPTION_MK_NGRAM_IDX_WORD_SPLIT,mkNgramIdxWordSplit);
+        put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT,mkNgramIdxWordHyphenSplit);
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT,mkNgramIdxWordUnderScoreSplit);
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,mkNgramIdxWordUnderScoreHyphenSplit);
     }};
     private static final Map<String,Function<List<String>,Set<Integer>>> SHAPE_PROCESS_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_MK_IDX_SHAPE, mkIdxShape);
