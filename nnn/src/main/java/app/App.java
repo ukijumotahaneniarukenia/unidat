@@ -14,15 +14,12 @@ import java.util.stream.Stream;
 
 // TODO https://ja.wikipedia.org/wiki/Unicode
 
-
-//Const Define
-//Function Define
-//Option-Function Define
+//作り方
+//#1. Const Define
+//#2. Function Define
+//#3. Option-Function Define
 
 //TODO
-//1. 全件取得機能 DONE
-//2. 取得列のサプレス機能 DONE
-//3. レンジ指定の全件取得機能 DONE
 //4. 新規検索方法の追加随時
 //5. インデックスデータのユーザー指定機能
 //6. 5.のデータに対するUnicodeテーブルへの突合せ結果の一覧表示
@@ -30,9 +27,6 @@ import java.util.stream.Stream;
 //8. 検索結果件数の表示
 //9. 正規表現の変数化 グラム化インデックス粒度を可変にする
 //10. 出現位置を切り捨てないパタンもオプションだす
-//11. 正規化オプション4パタン DONE
-//12. Web化する https://qiita.com/ota-meshi/items/2c01b118d9d1890cc97b
-//13. 同じオプションの引数違いを後勝ちではなく与えた分だけ処理する DONE
 //14. 入力で与えた引数がユニコードの第何群第何面に属しているかチェックし、サマリ情報を出力
 //15. 指定した文字数までのランダムな文字列生成。日本語。タミル語。ハングル文字。
 //18. mk***Split 系の関数は適用順序をもったストリームないしはコレクションを引数に受け取り、順次適用していく形で汎用化できる
@@ -113,6 +107,7 @@ public class App {
     private static final List<String> OPTION_IDX_INPUT_LIST = Arrays.asList(OPTION_IDX_INPUT_UNICODE_NAME,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME);
     private static final List<String> OPTION_SAMPLE_KEYWORD_LIST = Arrays.asList("HAN","HIRAGANA","GANA","UNKO","GRAM","POPO","POI","WAN","LUIS","BUTTA","AKASATANA","UBUNTU","QUALITY","RUBY","ZANBIA");
 
+    //TODO こういうのがあったほうが、いいとおもう　使ってはいないが
     private static final Map<String, Map<String,String>> CMDLINE_ARGS_NEED_PATTERN = new LinkedHashMap<>(){{
         put(OPTION_NUM_TO_STR, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
 
@@ -251,7 +246,7 @@ public class App {
             ,OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT
     ));
     //引数に指定されたら設定するマップ
-    private static final Map<String, Map<String,List<String>>> optionFlgPtn = new HashMap<>(){{
+    private static final Map<String, Map<String,List<String>>> OPTION_FLG_PATTERN = new HashMap<>(){{
         //ONするマップ
         put(ON, new LinkedHashMap<>(){{
             put(OPTION_HELP,Arrays.asList(ON));
@@ -292,7 +287,7 @@ public class App {
         }});
     }};
     //引数に指定されなかったら設定するマップ
-    private static final Map<String, Map<String,List<String>>> optionDefaultFlgPtn = new HashMap<>(){{
+    private static final Map<String, Map<String,List<String>>> OPTION_DEFAULT_FLG_PATTERN = new HashMap<>(){{
         //ONするマップ
         put(ON, new LinkedHashMap<>(){{
             put(OPTION_NUM_TO_STR,Arrays.asList(ON));
@@ -499,57 +494,50 @@ public class App {
         return tmp.entrySet().stream().collect(Collectors.groupingBy(e->e.getValue(),Collectors.mapping(e->e.getKey(),Collectors.toList())));
     };
     static Function<List<String>,Set<Integer>> mkIdxShape = (l) -> {
-        //mkIdxShape
         return l.stream().map(ee->Integer.valueOf(ee.substring(0,ee.indexOf("-")==-1?ee.length():ee.indexOf("-")))).collect(Collectors.toSet());
     };
     static BiFunction<Map<Integer,String>,String,Set<Integer>> mkIdxFilter = (m,s) -> {
         return m.entrySet().stream()
                 .filter(v->v.getValue().contains(s)).map(ee->ee.getKey()).collect(Collectors.toSet());
     };
-    //searchCodePointStartEnで使用 START
-    private static final Map<String,BiFunction<Integer,Integer,Map<Integer,String>>> mkInputFunctionMap = new LinkedHashMap<>(){{
+    private static final Map<String,BiFunction<Integer,Integer,Map<Integer,String>>> MK_INPUT_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_IDX_INPUT_UNICODE_NAME, mkInputUnicodeName);
         put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, mkInputUnicodeScriptName);
         put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, mkInputUnicodeBlockName);
     }};
-    private static final Map<String,BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>>> splitProcessFunctionMap = new LinkedHashMap<>(){{
-//            put(OPTION_MK_WORD_IDX_NON_SPLIT,);
+    private static final Map<String,BiFunction<Map<Integer, String>,Integer,Map<String, List<String>>>> SPLIT_PROCESS_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_MK_WORD_IDX_NON_WORD_SPLIT,mkWordIdxNonWordSplit);
         put(OPTION_MK_WORD_IDX_NON_WORD_HYPHEN_SPLIT,mkWordIdxNonWordHyphenSplit);
         put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_SPLIT,mkWordIdxNonWordUnderScoreSplit);
         put(OPTION_MK_WORD_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT,mkWordIdxNonWordUnderScoreHyphenSplit);
-//            put(OPTION_MK_NGRAM_IDX_NON_SPLIT,);
         put(OPTION_MK_NGRAM_IDX_NON_WORD_SPLIT,mkNgramIdxNonWordSplit);
         put(OPTION_MK_NGRAM_IDX_NON_WORD_HYPHEN_SPLIT,mkNgramIdxNonWordHyphenSplit);
         put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_SPLIT,mkNgramIdxNonWordUnderScoreSplit);
         put(OPTION_MK_NGRAM_IDX_NON_WORD_UNDERSCORE_HYPHEN_SPLIT,mkNgramIdxNonWordUnderScoreHyphenSplit);
     }};
-    private static final Map<String,Function<List<String>,Set<Integer>>> shapeProcessFunctionMap = new LinkedHashMap<>(){{
+    private static final Map<String,Function<List<String>,Set<Integer>>> SHAPE_PROCESS_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_MK_IDX_SHAPE, mkIdxShape);
     }};
-    private static final Map<String,BiFunction<Map<Integer,String>,String,Set<Integer>>> filterProcessFunctionMap = new LinkedHashMap<>(){{
+    private static final Map<String,BiFunction<Map<Integer,String>,String,Set<Integer>>> FILTER_PROCESS_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_MK_IDX_FILTER, mkIdxFilter);
     }};
-    //searchCodePointStartEnで使用 END
 
-    //wrapperExecuteMkTblで使用 START
-    private static final Map<String,Function<Integer,String>> singleArgFunctionInNumOutStrMap = new LinkedHashMap<>(){{
+    private static final Map<String,Function<Integer,String>> SINGLE_ARGS_FUNCTION_IN_NUM_OUT_STR_MAP = new LinkedHashMap<>(){{
         put(OPTION_NUM_TO_STR, numToStr);
         put(OPTION_CP_TO_STR, cpToStr);
         put(OPTION_CP_TO_UNICODE_NAME, cpToUnicodeName);
         put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, cpToUnicodeScriptName);
         put(OPTION_CP_TO_UNICODE_BLOCK_NAME, cpToUnicodeBlockName);
     }};
-    private static final Map<String,Function<String,String>> singleArgFunctionInStrOutStrMap = new LinkedHashMap<>(){{
+    private static final Map<String,Function<String,String>> SINGLE_ARGS_FUNCTION_IN_STR_OUT_STR_MAP = new LinkedHashMap<>(){{
         put(OPTION_STR_TO_UTF8, strToUtf8);
         put(OPTION_STR_TO_UTF16, strToUtf16);
         put(OPTION_STR_TO_UTF32, strToUtf32);
         put(OPTION_STR_TO_UNICODE, strToUnicode);
     }};
-    private static final Map<String,BiFunction<String,Normalizer.Form,String>> multipleArgFunctionMap = new LinkedHashMap<>(){{
+    private static final Map<String,BiFunction<String,Normalizer.Form,String>> MULTIPLE_ARGS_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_STR_TO_NORM, strToNorm);
     }};
-    //wrapperExecuteMkTblで使用 END
 
     private static void optionUsage(Integer status,String... optionPtn){
         for(String option : optionPtn){
@@ -646,7 +634,7 @@ public class App {
         BiFunction<S,Normalizer.Form,S> strToNorm = multipleArgFunctionMap.get(OPTION_STR_TO_NORM);
 
         // Must Item
-        //grp.grpseq
+        //grp,grpseq
         List<S> l = new ArrayList<>();
         l.add(numToStr.apply(grp));
         l.add(numToStr.apply(grpSeq));
@@ -708,7 +696,7 @@ public class App {
 
         ++GRP_CNT;
         for(int i=s;i<=e;i++){
-            rt.putAll(executeMkTbl(++SEQ_CNT,GRP_CNT,(i-s+1),i,singleArgFunctionInNumOutStrMap,singleArgFunctionInStrOutStrMap,multipleArgFunctionMap,suppressColumnsMap));
+            rt.putAll(executeMkTbl(++SEQ_CNT,GRP_CNT,(i-s+1),i,SINGLE_ARGS_FUNCTION_IN_NUM_OUT_STR_MAP,SINGLE_ARGS_FUNCTION_IN_STR_OUT_STR_MAP,MULTIPLE_ARGS_FUNCTION_MAP,suppressColumnsMap));
         }
         return rt;
     }
@@ -828,10 +816,10 @@ public class App {
                     ,ngramCnt
                     ,searchArgsMapList.get(i)
                     ,Arrays.asList(DEFAULT_NONE_KEYWORD)
-                    ,mkInputFunctionMap
-                    ,splitProcessFunctionMap
-                    ,filterProcessFunctionMap
-                    ,shapeProcessFunctionMap
+                    ,MK_INPUT_FUNCTION_MAP
+                    ,SPLIT_PROCESS_FUNCTION_MAP
+                    ,FILTER_PROCESS_FUNCTION_MAP
+                    ,SHAPE_PROCESS_FUNCTION_MAP
             ));
         }
         return rt;
@@ -852,64 +840,66 @@ public class App {
 
     private static List<Map<String, List<String>>> setOptionArgsPattern (List<String> cmdLineArgs,Map<String, Pattern> optionArgsRegexpPatternMap){
         List<Map<String, List<String>>> rt = new ArrayList<>();
+
         if(cmdLineArgs.size()<=0){
+            //引数個数チェック
             optionUsage(FAILURE_STATUS,OPTION_HELP);
         }
 
         int mx = cmdLineArgs.size();
 
-        Map<String, List<String>> optionFlgPtnOnMap = new LinkedHashMap<>();
-        Map<String, List<String>> optionFlgPtnOffMap = new LinkedHashMap<>();
+        Map<String, List<String>> optionFlgPatternOnMap = new LinkedHashMap<>();
+        Map<String, List<String>> optionFlgPatternOffMap = new LinkedHashMap<>();
         for(int i=0;i<mx;i++){
             //オプション引数が与えた際のフラグ設定 ON 与えられた分だけ設定
-            for(Map.Entry<String,List<String>> entry : optionFlgPtn.get(ON).entrySet()){
+            for(Map.Entry<String,List<String>> entry : OPTION_FLG_PATTERN.get(ON).entrySet()){
                 if(entry.getKey().equals(OPTION_SEARCH_KEYWORD)){
                     //コマンドライン引数が検索キーワードの場合
-                    if(isSearchKeyword(cmdLineArgs.get(i),optionFlgPtn.get(ON).get(OPTION_SEARCH_KEYWORD))){
-                        optionFlgPtnOnMap.put(OPTION_SEARCH_KEYWORD,Arrays.asList(cmdLineArgs.get(i)));
+                    if(isSearchKeyword(cmdLineArgs.get(i),OPTION_FLG_PATTERN.get(ON).get(OPTION_SEARCH_KEYWORD))){
+                        optionFlgPatternOnMap.put(OPTION_SEARCH_KEYWORD,Arrays.asList(cmdLineArgs.get(i)));
                     }else{
 
                     }
                 }else{
                     //コマンドライン引数が検索キーワードでない場合
                     if(optionArgsRegexpPatternMap.get(entry.getKey()).matcher(cmdLineArgs.get(i)).matches()){
-                        optionFlgPtnOnMap.put(entry.getKey(),entry.getValue());
+                        optionFlgPatternOnMap.put(entry.getKey(),entry.getValue());
                     }
                 }
             }
             //オプション引数が与えた際のフラグ設定 OFF 与えられた分だけ設定
-            for(Map.Entry<String,List<String>> entry : optionFlgPtn.get(OFF).entrySet()){
+            for(Map.Entry<String,List<String>> entry : OPTION_FLG_PATTERN.get(OFF).entrySet()){
                 if(optionArgsRegexpPatternMap.get(entry.getKey()).matcher(cmdLineArgs.get(i)).matches()){
-                    optionFlgPtnOffMap.put(entry.getKey(),entry.getValue());
+                    optionFlgPatternOffMap.put(entry.getKey(),entry.getValue());
                 }
             }
-            rt.addAll(optionFlgPtnOnMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
-            rt.addAll(optionFlgPtnOffMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
-            optionFlgPtnOnMap = new LinkedHashMap<>();
-            optionFlgPtnOffMap = new LinkedHashMap<>();
+            rt.addAll(optionFlgPatternOnMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
+            rt.addAll(optionFlgPatternOffMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
+            optionFlgPatternOnMap = new LinkedHashMap<>();
+            optionFlgPatternOffMap = new LinkedHashMap<>();
         }
 
         //オプション引数が与えられなかった際のデフォルトフラグ設定 ON
-        Map<String, List<String>> defaultOptionFlgPtnOnMap = new LinkedHashMap<>();
-        for(Map.Entry<String,List<String>> entry : optionDefaultFlgPtn.get(ON).entrySet()){
+        Map<String, List<String>> defaultOptionFlgPatternOnMap = new LinkedHashMap<>();
+        for(Map.Entry<String,List<String>> entry : OPTION_DEFAULT_FLG_PATTERN.get(ON).entrySet()){
             if(rt.stream().flatMap(map->map.keySet().stream()).noneMatch(key->key.contains(entry.getKey()))){
                 //未登録エントリのみ設定
-                defaultOptionFlgPtnOnMap.put(entry.getKey(),entry.getValue());
+                defaultOptionFlgPatternOnMap.put(entry.getKey(),entry.getValue());
             }
         }
         //Map<String, List<String>> --> List<Map<String, List<String>>>
-        rt.addAll(defaultOptionFlgPtnOnMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
+        rt.addAll(defaultOptionFlgPatternOnMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
 
         //オプション引数が与えられなかった際のデフォルトフラグ設定 OFF
-        Map<String, List<String>> defaultOptionFlgPtnOffMap = new LinkedHashMap<>();
-        for(Map.Entry<String,List<String>> entry : optionDefaultFlgPtn.get(OFF).entrySet()){
+        Map<String, List<String>> defaultOptionFlgPatternOffMap = new LinkedHashMap<>();
+        for(Map.Entry<String,List<String>> entry : OPTION_DEFAULT_FLG_PATTERN.get(OFF).entrySet()){
             if(rt.stream().flatMap(map->map.keySet().stream()).noneMatch(key->key.contains(entry.getKey()))){
                 //未登録エントリのみ設定
-                defaultOptionFlgPtnOffMap.put(entry.getKey(),entry.getValue());
+                defaultOptionFlgPatternOffMap.put(entry.getKey(),entry.getValue());
             }
         }
         //Map<String, List<String>> --> List<Map<String, List<String>>>
-        rt.addAll(defaultOptionFlgPtnOffMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
+        rt.addAll(defaultOptionFlgPatternOffMap.entrySet().stream().parallel().map(e->Map.of(e.getKey(),e.getValue())).collect(Collectors.toList()));
         return rt;
     }
     private static boolean showCmdInfo(List<Map<String,List<String>>> mainReStyleProcessArgsList,String option){
@@ -1054,10 +1044,16 @@ public class App {
                         DEFAULT_END_RN = Integer.parseInt(l.get(1));
                     }
                 }else if(3==l.size()){
-                    if(l.get(1).length()>String.valueOf(DEFAULT_END_RN).length()||l.get(2).length()>String.valueOf(DEFAULT_END_RN).length()){
+                    if(l.get(1).length()>String.valueOf(DEFAULT_END_RN).length()){
+                        //桁数チェック
+                        optionUsage(FAILURE_STATUS,OPTION_HELP);
+                    }
+                    if(l.get(2).length()>String.valueOf(DEFAULT_END_RN).length()){
+                        //桁数チェック
                         optionUsage(FAILURE_STATUS,OPTION_HELP);
                     }
                     if(Integer.parseInt(l.get(2))<DEFAULT_START_RN){
+                        //最小値チェック
                         optionUsage(FAILURE_STATUS,OPTION_HELP);
                     }
                     DEFAULT_START_RN = Integer.parseInt(l.get(1));
@@ -1078,7 +1074,7 @@ public class App {
 
         setDefaultCodePointRange(Arrays.asList(cmdLineArgs),optionArgsRegexpPattern);
 
-        List<Map<String, List<String>>> mainProcessArgs = setOptionArgsPattern(Arrays.asList(cmdLineArgs),mkOptionArgsRegexpPattern(OPTION_ARGS_PATTERN));
+        List<Map<String, List<String>>> mainProcessArgs = setOptionArgsPattern(Arrays.asList(cmdLineArgs),optionArgsRegexpPattern);
 
         canYouHelpMe(mainProcessArgs);
 
