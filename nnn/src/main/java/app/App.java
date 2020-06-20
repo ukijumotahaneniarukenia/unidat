@@ -14,303 +14,21 @@ import java.util.stream.Stream;
 
 // TODO https://ja.wikipedia.org/wiki/Unicode
 
+
+// TODO https://www.utf8-chartable.de/unicode-utf8-table.pl?utf8=dec 157 ~ 159あたりは制御コードなので、range指定時は飛ばす
+
 //作り方
 //#1. Const Define
 //#2. Function Define
 //#3. Option-Function Define
 
 //TODO
-//4. 新規検索方法の追加随時
-//5. インデックスデータのユーザー指定機能
-//6. 5.のデータに対するUnicodeテーブルへの突合せ結果の一覧表示
-//7. ヘルプのリッチ化
-//8. 検索結果件数の表示
-//9. 正規表現の変数化 グラム化インデックス粒度を可変にする
-//10. 出現位置を切り捨てないパタンもオプションだす
-//14. 入力で与えた引数がユニコードの第何群第何面に属しているかチェックし、サマリ情報を出力
-//15. 指定した文字数までのランダムな文字列生成。日本語。タミル語。ハングル文字。
-//18. mk***Split 系の関数は適用順序をもったストリームないしはコレクションを引数に受け取り、順次適用していく形で汎用化できる
 //19. range-onlyの際のmin-cp:max-cpのレスが遅過ぎ
-//20. word別に集計結果を一覧表示 --summary min,max,average,count,listagg...
 
 public class App {
 
-    private static final String PROGRAM_NAME = "unidat";
-    private static final String PROGRAM_VERSION = "1-0-0";
-
-    private static final Integer SUCCESS_STATUS=0;
-    private static final Integer FAILURE_STATUS=1;
-
-    private static Integer SEQ_CNT=0;
-    private static Integer GRP_CNT=0;
-    private static final String ON = "1";
-    private static final String OFF = "0";
-    private static final String ARGS_SEPARATOR = ":";
-
-    private static final String OPTION_IDX_INPUT_PATTERN="IDX_INPUT_PATTERN";
-    private static final String OPTION_SEARCH_KEYWORD="SEARCH_KEYWORD";
-
-    private static Integer DEFAULT_START_RN =Character.MIN_CODE_POINT;
-    private static Integer DEFAULT_END_RN=Character.MAX_CODE_POINT;
     private static final String DEFAULT_NONE_KEYWORD="ウンコもりもり森鴎外";
 
-    private static final String OPTION_RANGE = "OPTION_RANGE";
-    private static final String OPTION_HELP = "OPTION_HELP";
-    private static final String OPTION_VERSION = "OPTION_VERSION";
-    private static final String OPTION_USAGE = "OPTION_USAGE";
-
-    //grouping key
-    private static final String OPTION_WORD_SEARCH = "WORD_SEARCH";
-    private static final String OPTION_NGRAM_SEARCH = "NGRAM_SEARCH";
-    private static final String OPTION_HASH_KEY_SEARCH = "HASH_KEY_SEARCH";
-
-    private static final String OPTION_IDX_INPUT_UNICODE_NAME = "IDX_INPUT_UNICODE_NAME";
-    private static final String OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME = "IDX_INPUT_UNICODE_SCRIPT_NAME";
-    private static final String OPTION_IDX_INPUT_UNICODE_BLOCK_NAME = "IDX_INPUT_UNICODE_BLOCK_NAME";
-
-    private static final String OPTION_NORM_GRP_NFC="NORM_GRP_NFC";
-    private static final String OPTION_NORM_GRP_NFD="NORM_GRP_NFD";
-    private static final String OPTION_NORM_GRP_NFKC="NORM_GRP_NFKC";
-    private static final String OPTION_NORM_GRP_NFKD="NORM_GRP_NFKD";
-
-    private static final String OPTION_NUM_TO_STR="NUM_TO_STR";
-    private static final String OPTION_CP_TO_STR="CP_TO_STR";
-    private static final String OPTION_CP_TO_UNICODE_NAME="CP_TO_UNICODE_NAME";
-    private static final String OPTION_CP_TO_UNICODE_SCRIPT_NAME="CP_TO_UNICODE_SCRIPT_NAME";
-    private static final String OPTION_CP_TO_UNICODE_BLOCK_NAME="CP_TO_UNICODE_BLOCK_NAME";
-    private static final String OPTION_STR_TO_UTF8="STR_TO_UTF8";
-    private static final String OPTION_STR_TO_UTF16="STR_TO_UTF16";
-    private static final String OPTION_STR_TO_UTF32="STR_TO_UTF32";
-    private static final String OPTION_STR_TO_UNICODE="STR_TO_UNICODE";
-    private static final String OPTION_STR_TO_NORM="STR_TO_NORM";
-
-    private static final String OPTION_MK_WORD_IDX_NON_SPLIT="MK_WORD_IDX_NON_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_WORD_SPLIT="MK_WORD_IDX_WORD_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT="MK_WORD_IDX_WORD_HYPHEN_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT="MK_WORD_IDX_WORD_UNDERSCORE_SPLIT";
-    private static final String OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_NON_SPLIT="MK_NGRAM_IDX_NON_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_WORD_SPLIT="MK_NGRAM_IDX_WORD_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT="MK_NGRAM_IDX_WORD_HYPHEN_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT="MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT";
-    private static final String OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT";
-
-    private static final String OPTION_MK_IDX_SHAPE="MK_IDX_SHAPE";
-    private static final String OPTION_MK_IDX_FILTER="MK_IDX_FILTER";
-
-    private static final String CMDLINE_ARGS_NEED = "CMDLINE_ARGS_NEED";
-    private static final String CMDLINE_ARGS_NEED_CNT = "CMDLINE_ARGS_NEED_CNT";
-
-    private static final String OPTION_SEARCH_KEYWORD_PATTERN="[A-Z]+";
-
-    //TODO helpで使用予定
-    private static final List<String> OPTION_IDX_INPUT_LIST = Arrays.asList(OPTION_IDX_INPUT_UNICODE_NAME,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME);
-    private static final List<String> OPTION_SAMPLE_KEYWORD_LIST = Arrays.asList("HAN","HIRAGANA","GANA","UNKO","GRAM","POPO","POI","WAN","LUIS","BUTTA","AKASATANA","UBUNTU","QUALITY","RUBY","ZANBIA");
-
-    //TODO こういうのがあったほうが、いいとおもう　使ってはいないが
-    private static final Map<String, Map<String,String>> CMDLINE_ARGS_NEED_PATTERN = new LinkedHashMap<>(){{
-        put(OPTION_NUM_TO_STR, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-
-        put(OPTION_CP_TO_STR, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_CP_TO_UNICODE_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_CP_TO_UNICODE_BLOCK_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_STR_TO_UTF8, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_STR_TO_UTF16, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_STR_TO_UTF32, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_STR_TO_UNICODE, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_NORM_GRP_NFC, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_NORM_GRP_NFD, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_NORM_GRP_NFKC, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_NORM_GRP_NFKD, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-
-        put(OPTION_IDX_INPUT_UNICODE_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-
-        put(OPTION_MK_WORD_IDX_NON_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_NON_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_WORD_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_HASH_KEY_SEARCH, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-
-        put(OPTION_RANGE, new LinkedHashMap(){{
-            put(CMDLINE_ARGS_NEED,"true");
-            put(CMDLINE_ARGS_NEED_CNT,"2");
-        }});
-
-        put(OPTION_HELP, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_VERSION, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-        put(OPTION_USAGE, new LinkedHashMap(){{put(CMDLINE_ARGS_NEED,"false");}});
-
-    }};
-
-    private static final Map<String, List<String>> OPTION_ARGS_PATTERN = new LinkedHashMap<>(){{
-        put(OPTION_NUM_TO_STR, Arrays.asList("-cp", "--cp", "--codepoint"));
-        put(OPTION_CP_TO_STR, Arrays.asList("-s", "-str", "--str"));
-        put(OPTION_CP_TO_UNICODE_NAME, Arrays.asList("-unm", "--unm"));
-        put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, Arrays.asList("-usc", "--usc"));
-        put(OPTION_CP_TO_UNICODE_BLOCK_NAME, Arrays.asList("-ubl", "--ubl"));
-        put(OPTION_STR_TO_UTF8, Arrays.asList("-u8", "--u8"));
-        put(OPTION_STR_TO_UTF16, Arrays.asList("-u16", "--u16"));
-        put(OPTION_STR_TO_UTF32, Arrays.asList("-u32","--u32"));
-        put(OPTION_STR_TO_UNICODE, Arrays.asList("-unicode", "--unicode"));
-        put(OPTION_NORM_GRP_NFC, Arrays.asList("-nfc", "--nfc"));
-        put(OPTION_NORM_GRP_NFD, Arrays.asList("-nfd","--nfd"));
-        put(OPTION_NORM_GRP_NFKC, Arrays.asList("-nfkc", "--nfkc"));
-        put(OPTION_NORM_GRP_NFKD, Arrays.asList("-nfkd", "--nfkd"));
-
-        put(OPTION_IDX_INPUT_UNICODE_NAME, Arrays.asList("-input-unicode-name", "--input-unicode-name"));
-        put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, Arrays.asList("-input-unicode-script-name", "--input-unicode-script-name"));
-        put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, Arrays.asList("-input-unicode-block-name","--input-unicode-block-name"));
-
-        put(OPTION_MK_WORD_IDX_NON_SPLIT, Arrays.asList("-word-nonsplit", "--word-nonsplit"));
-        put(OPTION_MK_WORD_IDX_WORD_SPLIT, Arrays.asList("-word-split", "--word-split"));
-        put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT, Arrays.asList("-word-hyphen-split","--word-hyphen-split"));
-        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT, Arrays.asList("-word-underscore-split", "--word-underscore-split"));
-        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-word-all-split", "--word-all-split"));
-        put(OPTION_MK_NGRAM_IDX_NON_SPLIT, Arrays.asList("-ngram-nonsplit", "--ngram-nonsplit"));
-        put(OPTION_MK_NGRAM_IDX_WORD_SPLIT, Arrays.asList("-ngram-split", "--ngram-split"));
-        put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT, Arrays.asList("-ngram-hyphen-split","--ngram-hyphen-split"));
-        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT, Arrays.asList("-ngram-underscore-split", "--ngram-underscore-split"));
-        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-ngram-all-split", "--ngram-all-split"));
-        put(OPTION_HASH_KEY_SEARCH, Arrays.asList("-hash", "--hash", "-hashkey", "-hashKey", "-HashKey", "-Hashkey", "--hashkey", "--hashKey", "--HashKey", "--Hashkey"));
-
-        put(OPTION_RANGE, Arrays.asList("-r.*", "--r.*", "--range.*", "-range.*"));
-        put(OPTION_HELP, Arrays.asList("-h", "--h", "--help", "-help"));
-        put(OPTION_VERSION, Arrays.asList("-v", "--v", "-V", "--V", "-version", "--version"));
-        put(OPTION_USAGE, Arrays.asList("-usage", "--usage", "-Usage", "--Usage"));
-
-    }};
-    //正規化パタンを定義
-    private static final Map<String, Normalizer.Form> normMap = new HashMap<>(){{
-        put(OPTION_NORM_GRP_NFC, Normalizer.Form.NFC);
-        put(OPTION_NORM_GRP_NFD, Normalizer.Form.NFD);
-        put(OPTION_NORM_GRP_NFKC, Normalizer.Form.NFKC);
-        put(OPTION_NORM_GRP_NFKD, Normalizer.Form.NFKD);
-    }};
-    //グループ化対象キーを定義
-    private static final List<String> grpArgsList = new ArrayList<>(Arrays.asList(
-            OPTION_MK_WORD_IDX_NON_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
-            ,OPTION_MK_NGRAM_IDX_NON_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
-            ,OPTION_HASH_KEY_SEARCH
-            ,OPTION_IDX_INPUT_UNICODE_NAME
-            ,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME
-            ,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME
-            ,OPTION_SEARCH_KEYWORD
-    ));
-    //取得対象列リストを定義
-    private static final List<String> colArgsList = new ArrayList<>(Arrays.asList(
-            OPTION_NUM_TO_STR
-            ,OPTION_CP_TO_STR
-            ,OPTION_CP_TO_UNICODE_NAME
-            ,OPTION_CP_TO_UNICODE_SCRIPT_NAME
-            ,OPTION_CP_TO_UNICODE_BLOCK_NAME
-            ,OPTION_STR_TO_UTF8
-            ,OPTION_STR_TO_UTF16
-            ,OPTION_STR_TO_UTF32
-            ,OPTION_STR_TO_UNICODE
-            ,OPTION_NORM_GRP_NFC
-            ,OPTION_NORM_GRP_NFD
-            ,OPTION_NORM_GRP_NFKC
-            ,OPTION_NORM_GRP_NFKD
-    ));
-    //単語分割メソッドリストを定義
-    private static final List<String> wordSplitList = new ArrayList<>(Arrays.asList(
-            OPTION_MK_WORD_IDX_NON_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
-    ));
-    //NGRAM分割メソッドリストを定義
-    private static final List<String> ngramSplitList = new ArrayList<>(Arrays.asList(
-            OPTION_MK_NGRAM_IDX_NON_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT
-            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
-    ));
-    //引数に指定されたら設定するマップ
-    private static final Map<String, Map<String,List<String>>> OPTION_FLG_PATTERN = new HashMap<>(){{
-        //ONするマップ
-        put(ON, new LinkedHashMap<>(){{
-            put(OPTION_HELP,Arrays.asList(ON));
-            put(OPTION_VERSION,Arrays.asList(ON));
-            put(OPTION_USAGE,Arrays.asList(ON));
-            put(OPTION_RANGE,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_NON_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_WORD_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_NON_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_WORD_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
-            put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
-            put(OPTION_IDX_INPUT_UNICODE_NAME,Arrays.asList(ON));
-            put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,Arrays.asList(ON));
-            put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME,Arrays.asList(ON));
-            put(OPTION_HASH_KEY_SEARCH,Arrays.asList(ON));
-            put(OPTION_SEARCH_KEYWORD, Arrays.asList(OPTION_SEARCH_KEYWORD_PATTERN));
-        }});
-        //OFFするマップ
-        put(OFF, new LinkedHashMap<>(){{
-            put(OPTION_NUM_TO_STR,Arrays.asList(OFF));
-            put(OPTION_CP_TO_STR,Arrays.asList(OFF));
-            put(OPTION_CP_TO_UNICODE_NAME,Arrays.asList(OFF));
-            put(OPTION_CP_TO_UNICODE_SCRIPT_NAME,Arrays.asList(OFF));
-            put(OPTION_CP_TO_UNICODE_BLOCK_NAME,Arrays.asList(OFF));
-            put(OPTION_STR_TO_UTF8,Arrays.asList(OFF));
-            put(OPTION_STR_TO_UTF16,Arrays.asList(OFF));
-            put(OPTION_STR_TO_UTF32,Arrays.asList(OFF));
-            put(OPTION_STR_TO_UNICODE,Arrays.asList(OFF));
-            put(OPTION_NORM_GRP_NFC,Arrays.asList(OFF));
-            put(OPTION_NORM_GRP_NFD,Arrays.asList(OFF));
-            put(OPTION_NORM_GRP_NFKC,Arrays.asList(OFF));
-            put(OPTION_NORM_GRP_NFKD,Arrays.asList(OFF));
-        }});
-    }};
-    //引数に指定されなかったら設定するマップ
-    private static final Map<String, Map<String,List<String>>> OPTION_DEFAULT_FLG_PATTERN = new HashMap<>(){{
-        //ONするマップ
-        put(ON, new LinkedHashMap<>(){{
-            put(OPTION_NUM_TO_STR,Arrays.asList(ON));
-            put(OPTION_CP_TO_STR,Arrays.asList(ON));
-            put(OPTION_CP_TO_UNICODE_NAME,Arrays.asList(ON));
-            put(OPTION_CP_TO_UNICODE_SCRIPT_NAME,Arrays.asList(ON));
-            put(OPTION_CP_TO_UNICODE_BLOCK_NAME,Arrays.asList(ON));
-            put(OPTION_STR_TO_UTF8,Arrays.asList(ON));
-            put(OPTION_STR_TO_UTF16,Arrays.asList(ON));
-            put(OPTION_STR_TO_UTF32,Arrays.asList(ON));
-            put(OPTION_STR_TO_UNICODE,Arrays.asList(ON));
-            put(OPTION_NORM_GRP_NFC,Arrays.asList(ON));
-            put(OPTION_NORM_GRP_NFD,Arrays.asList(ON));
-            put(OPTION_NORM_GRP_NFKC,Arrays.asList(ON));
-            put(OPTION_NORM_GRP_NFKD,Arrays.asList(ON));
-        }});
-        //OFFするマップ
-        put(OFF, new LinkedHashMap<>(){{
-            put(OPTION_HELP,Arrays.asList(OFF));
-            put(OPTION_VERSION,Arrays.asList(OFF));
-            put(OPTION_USAGE,Arrays.asList(OFF));
-        }});
-    }};
     static BiFunction<Integer,Integer,Map<Integer,String>> mkInputUnicodeName = (s,e) -> {
         return IntStream.rangeClosed(s,e).boxed().parallel().collect(Collectors.toMap(i->i,i->Optional.ofNullable(cpToUnicodeName(i)).orElse(DEFAULT_NONE_KEYWORD))).entrySet().stream()
                 .collect(Collectors.toMap(ee->ee.getKey(),ee->ee.getValue()));
@@ -500,6 +218,253 @@ public class App {
         return m.entrySet().stream()
                 .filter(v->v.getValue().contains(s)).map(ee->ee.getKey()).collect(Collectors.toSet());
     };
+
+    private static final String PROGRAM_NAME = "unidat";
+    private static final String PROGRAM_VERSION = "1-0-0";
+
+    private static final Integer SUCCESS_STATUS=0;
+    private static final Integer FAILURE_STATUS=1;
+
+    private static Integer SEQ_CNT=0;
+    private static Integer GRP_CNT=0;
+    private static final String ON = "1";
+    private static final String OFF = "0";
+    private static final String ARGS_SEPARATOR = ":";
+
+    private static final String OPTION_IDX_INPUT_PATTERN="IDX_INPUT_PATTERN";
+    private static final String OPTION_SEARCH_KEYWORD="SEARCH_KEYWORD";
+
+    private static Integer DEFAULT_START_RN =Character.MIN_CODE_POINT;
+    private static Integer DEFAULT_END_RN=Character.MAX_CODE_POINT;
+
+    private static final String OPTION_RANGE = "OPTION_RANGE";
+    private static final String OPTION_HELP = "OPTION_HELP";
+    private static final String OPTION_VERSION = "OPTION_VERSION";
+    private static final String OPTION_USAGE = "OPTION_USAGE";
+
+    //grouping key
+    private static final String OPTION_WORD_SEARCH = "WORD_SEARCH";
+    private static final String OPTION_NGRAM_SEARCH = "NGRAM_SEARCH";
+    private static final String OPTION_HASH_KEY_SEARCH = "HASH_KEY_SEARCH";
+
+    private static final String OPTION_IDX_INPUT_UNICODE_NAME = "IDX_INPUT_UNICODE_NAME";
+    private static final String OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME = "IDX_INPUT_UNICODE_SCRIPT_NAME";
+    private static final String OPTION_IDX_INPUT_UNICODE_BLOCK_NAME = "IDX_INPUT_UNICODE_BLOCK_NAME";
+
+    private static final String SEQ = "SEQ";
+    private static final String GRP = "GRP";
+    private static final String GRPSEQ ="GRPSEQ";
+
+    private static final String OPTION_NUM_TO_STR="NUM_TO_STR";
+    private static final String OPTION_CP_TO_STR="CP_TO_STR";
+    private static final String OPTION_CP_TO_UNICODE_NAME="CP_TO_UNICODE_NAME";
+    private static final String OPTION_CP_TO_UNICODE_SCRIPT_NAME="CP_TO_UNICODE_SCRIPT_NAME";
+    private static final String OPTION_CP_TO_UNICODE_BLOCK_NAME="CP_TO_UNICODE_BLOCK_NAME";
+    private static final String OPTION_STR_TO_UTF8="STR_TO_UTF8";
+    private static final String OPTION_STR_TO_UTF16="STR_TO_UTF16";
+    private static final String OPTION_STR_TO_UTF32="STR_TO_UTF32";
+    private static final String OPTION_STR_TO_UNICODE="STR_TO_UNICODE";
+    private static final String OPTION_STR_TO_NORM="STR_TO_NORM";
+
+    private static final String OPTION_NORM_GRP_NFC="NORM_GRP_NFC";
+    private static final String OPTION_NORM_GRP_NFD="NORM_GRP_NFD";
+    private static final String OPTION_NORM_GRP_NFKC="NORM_GRP_NFKC";
+    private static final String OPTION_NORM_GRP_NFKD="NORM_GRP_NFKD";
+
+
+    private static final String OPTION_MK_WORD_IDX_NON_SPLIT="MK_WORD_IDX_NON_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_SPLIT="MK_WORD_IDX_WORD_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT="MK_WORD_IDX_WORD_HYPHEN_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT="MK_WORD_IDX_WORD_UNDERSCORE_SPLIT";
+    private static final String OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_NON_SPLIT="MK_NGRAM_IDX_NON_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_SPLIT="MK_NGRAM_IDX_WORD_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT="MK_NGRAM_IDX_WORD_HYPHEN_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT="MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT";
+    private static final String OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT="MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT";
+
+    private static final String OPTION_MK_IDX_SHAPE="MK_IDX_SHAPE";
+    private static final String OPTION_MK_IDX_FILTER="MK_IDX_FILTER";
+
+    private static final String OPTION_SEARCH_KEYWORD_PATTERN="[A-Z]+";
+
+    private static final Map<String, List<String>> OPTION_ARGS_PATTERN = new LinkedHashMap<>(){{
+        put(OPTION_NUM_TO_STR, Arrays.asList("-cp", "--cp", "--codepoint"));
+        put(OPTION_CP_TO_STR, Arrays.asList("-s", "-str", "--str"));
+        put(OPTION_CP_TO_UNICODE_NAME, Arrays.asList("-unm", "--unm"));
+        put(OPTION_CP_TO_UNICODE_SCRIPT_NAME, Arrays.asList("-usc", "--usc"));
+        put(OPTION_CP_TO_UNICODE_BLOCK_NAME, Arrays.asList("-ubl", "--ubl"));
+        put(OPTION_STR_TO_UTF8, Arrays.asList("-u8", "--u8"));
+        put(OPTION_STR_TO_UTF16, Arrays.asList("-u16", "--u16"));
+        put(OPTION_STR_TO_UTF32, Arrays.asList("-u32","--u32"));
+        put(OPTION_STR_TO_UNICODE, Arrays.asList("-unicode", "--unicode"));
+        put(OPTION_NORM_GRP_NFC, Arrays.asList("-nfc", "--nfc"));
+        put(OPTION_NORM_GRP_NFD, Arrays.asList("-nfd","--nfd"));
+        put(OPTION_NORM_GRP_NFKC, Arrays.asList("-nfkc", "--nfkc"));
+        put(OPTION_NORM_GRP_NFKD, Arrays.asList("-nfkd", "--nfkd"));
+
+        put(OPTION_IDX_INPUT_UNICODE_NAME, Arrays.asList("-input-unicode-name", "--input-unicode-name"));
+        put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, Arrays.asList("-input-unicode-script-name", "--input-unicode-script-name"));
+        put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME, Arrays.asList("-input-unicode-block-name","--input-unicode-block-name"));
+
+        put(OPTION_MK_WORD_IDX_NON_SPLIT, Arrays.asList("-word-nonsplit", "--word-nonsplit"));
+        put(OPTION_MK_WORD_IDX_WORD_SPLIT, Arrays.asList("-word-split", "--word-split"));
+        put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT, Arrays.asList("-word-hyphen-split","--word-hyphen-split"));
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT, Arrays.asList("-word-underscore-split", "--word-underscore-split"));
+        put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-word-all-split", "--word-all-split"));
+        put(OPTION_MK_NGRAM_IDX_NON_SPLIT, Arrays.asList("-ngram-nonsplit", "--ngram-nonsplit"));
+        put(OPTION_MK_NGRAM_IDX_WORD_SPLIT, Arrays.asList("-ngram-split", "--ngram-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT, Arrays.asList("-ngram-hyphen-split","--ngram-hyphen-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT, Arrays.asList("-ngram-underscore-split", "--ngram-underscore-split"));
+        put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT, Arrays.asList("-ngram-all-split", "--ngram-all-split"));
+        put(OPTION_HASH_KEY_SEARCH, Arrays.asList("-hash", "--hash", "-hashkey", "-hashKey", "-HashKey", "-Hashkey", "--hashkey", "--hashKey", "--HashKey", "--Hashkey"));
+
+        put(OPTION_RANGE, Arrays.asList("-r.*", "--r.*", "--range.*", "-range.*"));
+        put(OPTION_HELP, Arrays.asList("-h", "--h", "--help", "-help"));
+        put(OPTION_VERSION, Arrays.asList("-v", "--v", "-V", "--V", "-version", "--version"));
+        put(OPTION_USAGE, Arrays.asList("-usage", "--usage", "-Usage", "--Usage"));
+
+    }};
+    //正規化パタンを定義
+    private static final Map<String, Normalizer.Form> NORMALIZE_PATTERN_MAP = new HashMap<>(){{
+        put(OPTION_NORM_GRP_NFC, Normalizer.Form.NFC);
+        put(OPTION_NORM_GRP_NFD, Normalizer.Form.NFD);
+        put(OPTION_NORM_GRP_NFKC, Normalizer.Form.NFKC);
+        put(OPTION_NORM_GRP_NFKD, Normalizer.Form.NFKD);
+    }};
+    //グループ化対象キーを定義
+    private static final List<String> grpArgsList = new ArrayList<>(Arrays.asList(
+            OPTION_MK_WORD_IDX_NON_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
+
+            ,OPTION_MK_NGRAM_IDX_NON_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
+
+            ,OPTION_HASH_KEY_SEARCH
+
+            ,OPTION_IDX_INPUT_UNICODE_NAME
+            ,OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME
+            ,OPTION_IDX_INPUT_UNICODE_BLOCK_NAME
+
+            ,OPTION_SEARCH_KEYWORD
+    ));
+    //取得対象列リストを定義
+    private static final List<String> COL_ARGS_LIST = new ArrayList<>(Arrays.asList(
+            SEQ
+            ,GRP
+            ,GRPSEQ
+            ,OPTION_NUM_TO_STR
+            ,OPTION_CP_TO_STR
+            ,OPTION_CP_TO_UNICODE_NAME
+            ,OPTION_CP_TO_UNICODE_SCRIPT_NAME
+            ,OPTION_CP_TO_UNICODE_BLOCK_NAME
+            ,OPTION_STR_TO_UTF8
+            ,OPTION_STR_TO_UTF16
+            ,OPTION_STR_TO_UTF32
+            ,OPTION_STR_TO_UNICODE
+            ,OPTION_NORM_GRP_NFC
+            ,OPTION_NORM_GRP_NFD
+            ,OPTION_NORM_GRP_NFKC
+            ,OPTION_NORM_GRP_NFKD
+    ));
+
+    //単語分割メソッドリストを定義
+    private static final List<String> WORD_SPLIT_LIST = new ArrayList<>(Arrays.asList(
+            OPTION_MK_WORD_IDX_NON_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
+    ));
+    //NGRAM分割メソッドリストを定義
+    private static final List<String> NGRAM_SPLIT_LIST = new ArrayList<>(Arrays.asList(
+            OPTION_MK_NGRAM_IDX_NON_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT
+            ,OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT
+    ));
+    //引数に指定されたら設定するマップ
+    private static final Map<String, Map<String,List<String>>> OPTION_FLG_PATTERN = new HashMap<>(){{
+        //ONするマップ
+        put(ON, new LinkedHashMap<>(){{
+            put(OPTION_HELP,Arrays.asList(ON));
+            put(OPTION_VERSION,Arrays.asList(ON));
+            put(OPTION_USAGE,Arrays.asList(ON));
+            put(OPTION_RANGE,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_NON_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_WORD_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_NON_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_SPLIT,Arrays.asList(ON));
+            put(OPTION_MK_NGRAM_IDX_WORD_UNDERSCORE_HYPHEN_SPLIT,Arrays.asList(ON));
+            put(OPTION_IDX_INPUT_UNICODE_NAME,Arrays.asList(ON));
+            put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME,Arrays.asList(ON));
+            put(OPTION_IDX_INPUT_UNICODE_BLOCK_NAME,Arrays.asList(ON));
+            put(OPTION_HASH_KEY_SEARCH,Arrays.asList(ON));
+            put(OPTION_SEARCH_KEYWORD, Arrays.asList(OPTION_SEARCH_KEYWORD_PATTERN));
+        }});
+        //OFFするマップ
+        put(OFF, new LinkedHashMap<>(){{
+            put(OPTION_NUM_TO_STR,Arrays.asList(OFF));
+            put(OPTION_CP_TO_STR,Arrays.asList(OFF));
+            put(OPTION_CP_TO_UNICODE_NAME,Arrays.asList(OFF));
+            put(OPTION_CP_TO_UNICODE_SCRIPT_NAME,Arrays.asList(OFF));
+            put(OPTION_CP_TO_UNICODE_BLOCK_NAME,Arrays.asList(OFF));
+            put(OPTION_STR_TO_UTF8,Arrays.asList(OFF));
+            put(OPTION_STR_TO_UTF16,Arrays.asList(OFF));
+            put(OPTION_STR_TO_UTF32,Arrays.asList(OFF));
+            put(OPTION_STR_TO_UNICODE,Arrays.asList(OFF));
+            put(OPTION_NORM_GRP_NFC,Arrays.asList(OFF));
+            put(OPTION_NORM_GRP_NFD,Arrays.asList(OFF));
+            put(OPTION_NORM_GRP_NFKC,Arrays.asList(OFF));
+            put(OPTION_NORM_GRP_NFKD,Arrays.asList(OFF));
+        }});
+    }};
+    //引数に指定されなかったら設定するマップ
+    private static final Map<String, Map<String,List<String>>> OPTION_DEFAULT_FLG_PATTERN = new HashMap<>(){{
+        //ONするマップ
+        put(ON, new LinkedHashMap<>(){{
+
+            //デフォルトでマスト列
+            put(SEQ,Arrays.asList(ON));
+            put(GRP,Arrays.asList(ON));
+            put(GRPSEQ,Arrays.asList(ON));
+
+
+
+
+            put(OPTION_NUM_TO_STR,Arrays.asList(ON));
+            put(OPTION_CP_TO_STR,Arrays.asList(ON));
+            put(OPTION_CP_TO_UNICODE_NAME,Arrays.asList(ON));
+            put(OPTION_CP_TO_UNICODE_SCRIPT_NAME,Arrays.asList(ON));
+            put(OPTION_CP_TO_UNICODE_BLOCK_NAME,Arrays.asList(ON));
+            put(OPTION_STR_TO_UTF8,Arrays.asList(ON));
+            put(OPTION_STR_TO_UTF16,Arrays.asList(ON));
+            put(OPTION_STR_TO_UTF32,Arrays.asList(ON));
+            put(OPTION_STR_TO_UNICODE,Arrays.asList(ON));
+            put(OPTION_NORM_GRP_NFC,Arrays.asList(ON));
+            put(OPTION_NORM_GRP_NFD,Arrays.asList(ON));
+            put(OPTION_NORM_GRP_NFKC,Arrays.asList(ON));
+            put(OPTION_NORM_GRP_NFKD,Arrays.asList(ON));
+        }});
+        //OFFするマップ
+        put(OFF, new LinkedHashMap<>(){{
+            put(OPTION_HELP,Arrays.asList(OFF));
+            put(OPTION_VERSION,Arrays.asList(OFF));
+            put(OPTION_USAGE,Arrays.asList(OFF));
+        }});
+    }};
     private static final Map<String,BiFunction<Integer,Integer,Map<Integer,String>>> MK_INPUT_FUNCTION_MAP = new LinkedHashMap<>(){{
         put(OPTION_IDX_INPUT_UNICODE_NAME, mkInputUnicodeName);
         put(OPTION_IDX_INPUT_UNICODE_SCRIPT_NAME, mkInputUnicodeScriptName);
@@ -651,11 +616,11 @@ public class App {
 
         S dest = null;
         for(Map.Entry<S,List<S>> suppressColumnsMapEntry: suppressColumnsMap.entrySet()){
-            if(normMap.keySet().stream().anyMatch(e->e.equals(suppressColumnsMapEntry.getKey()))){
+            if(NORMALIZE_PATTERN_MAP.keySet().stream().anyMatch(e->e.equals(suppressColumnsMapEntry.getKey()))){
                 if(1L==suppressColumnsMapEntry.getValue().stream().filter(e->e.equals(OFF)).count()){
 
                 }else{
-                    dest = strToNorm.apply(cpToStr.apply(i),normMap.get(suppressColumnsMapEntry.getKey()));//strToNorm(cpToStr(i), Normalizer.Form.NFD)
+                    dest = strToNorm.apply(cpToStr.apply(i),NORMALIZE_PATTERN_MAP.get(suppressColumnsMapEntry.getKey()));//strToNorm(cpToStr(i), Normalizer.Form.NFD)
                     l.add(dest);
                     rt.put(seq,l);
                     //strToUtf8,strToUtf16,strToUtf32,strToUnicode
@@ -782,10 +747,10 @@ public class App {
 
         //CMD
         Map<S, List<S>> midput;
-        if(wordSplitList.stream().anyMatch(e->e.equals(l.get(1)))){
+        if(WORD_SPLIT_LIST.stream().anyMatch(e->e.equals(l.get(1)))){
             //word
             midput = splitProcessFunction.apply(input,ngramCnt);
-        }else if(ngramSplitList.stream().anyMatch(e->e.equals(l.get(1)))){
+        }else if(NGRAM_SPLIT_LIST.stream().anyMatch(e->e.equals(l.get(1)))){
             //ngram
             midput = splitProcessFunction.apply(input,ngramCnt);
         }else{
@@ -910,7 +875,7 @@ public class App {
     private static Integer mainProcess (List<Map<String,List<String>>> mainReStyleProcessArgsList) {
         int ret = SUCCESS_STATUS;
         List<String> argsKeyList = mainReStyleProcessArgsList.stream().flatMap(e->e.keySet().stream()).collect(Collectors.toList());
-        Map<String,List<String>> suppressColMap = mainReStyleProcessArgsList.stream().flatMap(m->m.entrySet().stream()).filter(e->colArgsList.contains(e.getKey()))
+        Map<String,List<String>> suppressColMap = mainReStyleProcessArgsList.stream().flatMap(m->m.entrySet().stream()).filter(e->COL_ARGS_LIST.contains(e.getKey()))
                 .collect(Collectors.toMap(
                         e->e.getKey()
                         ,e->e.getValue()
@@ -1025,8 +990,13 @@ public class App {
         //システム全体で参照するコードポイント範囲を設定
         int mx = cmdLineArgs.size();
         for(int i = 0;i < mx;i++){
-            List<String> l = Arrays.asList(cmdLineArgs.get(i).split(ARGS_SEPARATOR));
-            if(optionArgsRegexpPatternMap.get(OPTION_RANGE).matcher(cmdLineArgs.get(i)).matches()){
+
+            Matcher mc = optionArgsRegexpPatternMap.get(OPTION_RANGE).matcher(cmdLineArgs.get(i));
+
+            if(mc.matches()){
+
+                List<String> l = Arrays.asList(cmdLineArgs.get(i).split(ARGS_SEPARATOR));
+
                 if(l.size()>3){
                     //引数個数チェック
                     optionUsage(FAILURE_STATUS,OPTION_HELP);
@@ -1068,9 +1038,8 @@ public class App {
     public static void main(String... cmdLineArgs) {
         int ret;
 
-//        cmdLineArgs = new String[]{"--range:1:30"};
-
         Map<String,Pattern> optionArgsRegexpPattern = mkOptionArgsRegexpPattern(OPTION_ARGS_PATTERN);
+
 
         setDefaultCodePointRange(Arrays.asList(cmdLineArgs),optionArgsRegexpPattern);
 
@@ -1078,18 +1047,12 @@ public class App {
 
         canYouHelpMe(mainProcessArgs);
 
-
         Map<Integer,Map<String,List<String>>> mainGroupingProcessArgs = mainGroupingProcessArgs(mainProcessArgs);
 
         mainProcessArgsGroupingChk(mainGroupingProcessArgs);
 
         int mx = mainGroupingProcessArgs.size();
         List<Map<String,List<String>>> mainReStyleProcessArgs = IntStream.rangeClosed(1,mx).boxed().map(k->mainGroupingProcessArgs.get(k)).collect(Collectors.toList());
-
-//        System.out.println(DEFAULT_START_RN);
-//        System.out.println(DEFAULT_END_RN);
-
-//        System.exit(1);
 
         ret = mainProcess(mainReStyleProcessArgs);
         System.exit(ret);
